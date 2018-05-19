@@ -1,0 +1,63 @@
+<div class="uk-padding">
+  <div class="uk-card uk-card-default ">
+    <div class="uk-card-header">
+      <div class="uk-grid-small uk-flex-middle" uk-grid>
+        <div class="uk-width-auto">
+          <img class="uk-border-circle" width="80" height="100" src="assets/img/profile-icon.png"> 
+          <!-- {{data.image}} -->
+          <br>          <br>
+          <input type="file" (change)="upload($event)" accept=".png,.jpg" />
+        </div>
+        <div class="uk-width-expand">
+          <h3 class="uk-card-title uk-margin-remove-bottom">Email : {{email}}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="uk-card-body">
+      <p> name :  {{data.name}}</p>
+      <p>phone :  {{data.phone}}</p>
+      <p>job :    {{data.job}}</p>
+      <p>adress : {{data.adress}}</p>
+      <p>city :   {{data.city}}</p>
+      <p>age :   {{data.age}}</p>
+    </div>
+    <div class="uk-card-footer">
+      <a href="#" class="uk-button uk-button-text" uk-toggle="target: #modal-example">Edit</a>
+
+
+      <!-- This is the modal -->
+      <div id="modal-example" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+          <fieldset class="uk-fieldset">
+
+            <div class="uk-margin">
+              <input class="uk-input" type="text" placeholder=" اسمك" name="name" [(ngModel)]="data.name">
+            </div>
+            <div class="uk-margin">
+              <input class="uk-input" type="text" placeholder="العمر" name="age" [(ngModel)]="data.age">
+            </div>
+            <div class="uk-margin">
+              <input class="uk-input" type="text" placeholder="رقم الهاتف " name="phone" [(ngModel)]="data.phone">
+            </div>
+
+            <div class="uk-margin">
+              <input class="uk-input" type="text" placeholder="العنوان" name="address" [(ngModel)]="data.address">
+            </div>
+
+            <div class="uk-margin">
+              <input class="uk-input" type="text" placeholder="العمل " name="job" [(ngModel)]="data.job">
+            </div>
+
+
+          </fieldset>
+
+          <p class="uk-text-right">
+            <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+            <button class="uk-button uk-modal-close uk-button-primary" type="button" (click)="onEdite(item.$key)">Save</button>
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
