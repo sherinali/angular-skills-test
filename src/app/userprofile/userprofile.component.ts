@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFireList, AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireStorageReference, AngularFireStorage, AngularFireUploadTask } from 'angularfire2/storage';
 import { Observable } from 'rxjs/Observable';
+import { Router } from '@angular/router';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-userprofile',
@@ -26,16 +28,21 @@ export class UserprofileComponent implements OnInit {
     email: '',
     image: ''
   }
-
+  spinner: boolean = true
+  redirect: boolean = false
   userKey: any
   ref: AngularFireStorageReference;
   task: AngularFireUploadTask;
   downloadURL: Observable<string>;
+  uploadPercent: Observable<number>;
   imageURL: string
+  imgload: boolean = true;
 
-  constructor(private afStorage: AngularFireStorage, public db: AngularFireDatabase) {
+  constructor(private afStorage: AngularFireStorage, public db: AngularFireDatabase, public router: Router) {
     this.email = localStorage.getItem('email');
     this.myid = localStorage.getItem('uid');
+    // console.log(this.redirect)
+    // if (this.redirect == false) {''}
     this.itemList = db.list('users')
 
     this.itemList.snapshotChanges()
@@ -58,9 +65,10 @@ export class UserprofileComponent implements OnInit {
             this.data.job = this.itemArray[0]['job']
             this.data.email = this.itemArray[0]['email']
             this.data.image = this.itemArray[0]['image']
-
-
+            this.imgload = false
+            this.spinner = false
             console.log(this.userKey)
+            console.log(this.data)
           }
         })
       }
@@ -81,41 +89,131 @@ export class UserprofileComponent implements OnInit {
 
 
 
+  // upload(event) {
+  //   const id = Math.random().toString(36).substring(2);
+  //   this.ref = this.afStorage.ref(id);
+  //   this.task = this.ref.put(event.target.files[0]);
+  //   this.downloadURL = this.task.downloadURL()
+  //   this.downloadURL.subscribe(url => {
+
+  //     if (url) {
+  //       this.imageURL = url
+
+  //     }
+  //     console.log(this.imageURL)
+
+  //     this.itemList.set(this.userKey, {
+  //       name: this.data.name,
+  //       phone: this.data.phone,
+  //       age: this.data.age,
+  //       address: this.data.address,
+  //       city: this.data.city,
+  //       job: this.data.job,
+  //       email: this.email,
+  //       uid: this.myid,
+  //       image: this.imageURL
+  //     })
+
+  //   })
+
+  // }
+
+  // upload(event) {
+  //   const id = Math.random().toString(36).substring(2)
+  //   this.afStorage.upload(id, event.target.files[0]).then(() => {
+  //     this.ref = this.afStorage.ref(id)
+  //     this.ref.getDownloadURL().subscribe(url => {
+  //       console.log(url)
+
+  //       if (url) {
+  //         this.imageURL = url
+  //         this.itemList.set(this.userKey, {
+  //           name: this.data.name,
+  //           age: this.data.age,
+  //           phone: this.data.phone,
+  //           address: this.data.address,
+  //           city: this.data.city,
+  //           job: this.data.job,
+  //           email: this.email,
+  //           uid: this.myid,
+  //           image: this.imageURL
+  //         })
+
+  //       }
+  //     })
+  //   })
+
+  // }
+  // ----------------------------------------------------
   upload(event) {
+    // random name = path of image in storge server
     const id = Math.random().toString(36).substring(2);
-    this.ref = this.afStorage.ref(id);
-    this.task = this.ref.put(event.target.files[0]);
-    this.downloadURL = this.task.downloadURL()
-    this.downloadURL.subscribe(url => {
+    //uapload task(path,and file) and storge then make reference
+    const TaskUpload = this.afStorage.upload(id, event.target.files[0])
+      .then(() => {
+        this.ref = this.afStorage.ref(id);
+        //getDownloadURL() Observable method
+        const downloadURL = this.ref.getDownloadURL().subscribe(url => {
 
-      if (url) {
-        this.imageURL = url
+          //  if (url) {
+          this.imageURL = url
+          // }
 
-      }
-      console.log(this.imageURL)
+          console.log(this.imageURL)
 
-      this.itemList.set(this.userKey, {
-        name: this.data.name,
-        phone: this.data.phone,
-        age: this.data.age,
-        address: this.data.address,
-        city: this.data.city,
-        job: this.data.job,
-        email: this.email,
-        uid: this.myid,
-        image: this.imageURL
+          this.itemList.set(this.userKey, {
+            name: this.data.name,
+            phone: this.data.phone,
+            age: this.data.age,
+            address: this.data.address,
+            city: this.data.city,
+            job: this.data.job,
+            email: this.email,
+            uid: this.myid,
+            image: this.imageURL
+          })
+        })
       })
 
-    })
+
+
 
   }
+  //...........................
+  // upload(event) {
+  //   const id = Math.random().toString(36).substring(2)
+  //   this.afStorage.upload(id, event.target.files[0]).then(() => {
+  //     this.ref = this.afStorage.ref(id)
+  //     this.ref.getDownloadURL().subscribe(url => {
+  //       console.log(url)
+
+  //       if (url) {
+  //         this.imageURL = url
+  //         console.log(this.imageURL)
+  //       }
+
+  //       this.itemList.set(this.userKey, {
+  //         name: this.data.name,
+  //         age: this.data.age,
+  //         phone: this.data.phone,
+  //         address: this.data.address,
+  //         city: this.data.city,
+  //         job: this.data.job,
+  //         email: this.email,
+  //         uid: this.myid,
+  //         image: this.imageURL
+  //       })
+
+
+  //     })
+  //   })
+  // }
 
 
 
 
 
-
-  onEdite() {
+  onEdit() {
 
 
     this.itemList.set(this.userKey, {
@@ -126,7 +224,8 @@ export class UserprofileComponent implements OnInit {
       city: this.data.city,
       job: this.data.job,
       email: this.email,
-      uid: this.myid
+      uid: this.myid,
+      image: this.imageURL
     })
 
   }
@@ -144,4 +243,5 @@ export class ListItemClass {
   city: string;
   job: string;
   email: string;
+  image: string;
 }

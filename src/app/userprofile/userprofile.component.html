@@ -3,7 +3,8 @@
     <div class="uk-card-header">
       <div class="uk-grid-small uk-flex-middle" uk-grid>
         <div class="uk-width-auto">
-          <img class="uk-border-circle" width="80" height="100" src="{{data.image}}"> 
+            <div uk-spinner *ngIf="imgload" ></div>
+          <img class="uk-border-circle" width="80" height="100" src="{{data.image}}">
           <!-- {{data.image}} -->
           <br>          <br>
           <input type="file" (change)="upload($event)" accept=".png,.jpg" />
@@ -14,12 +15,14 @@
       </div>
     </div>
     <div class="uk-card-body">
-      <p> name :  {{data.name}}</p>
-      <p>phone :  {{data.phone}}</p>
-      <p>job :    {{data.job}}</p>
-      <p>adress : {{data.adress}}</p>
-      <p>city :   {{data.city}}</p>
-      <p>age :   {{data.age}}</p>
+      <!-- <div *ngIf="spinner" uk-spinner></div> -->
+      <p> name : {{data.name}}</p>
+      <p>age : {{data.age}}</p>
+      <p>phone : {{data.phone}}</p>
+      <p>address : {{data.address}}</p>
+      <p>city : {{data.city}}</p>
+      <p>job : {{data.job}}</p>
+      
     </div>
     <div class="uk-card-footer">
       <a href="#" class="uk-button uk-button-text" uk-toggle="target: #modal-example">Edit</a>
@@ -43,7 +46,9 @@
             <div class="uk-margin">
               <input class="uk-input" type="text" placeholder="العنوان" name="address" [(ngModel)]="data.address">
             </div>
-
+            <div class="uk-margin">
+              <input class="uk-input" type="text" placeholder="المدينة" name="city" [(ngModel)]="data.city">
+            </div>
             <div class="uk-margin">
               <input class="uk-input" type="text" placeholder="العمل " name="job" [(ngModel)]="data.job">
             </div>
@@ -53,7 +58,7 @@
 
           <p class="uk-text-right">
             <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
-            <button class="uk-button uk-modal-close uk-button-primary" type="button" (click)="onEdite()">Save</button>
+            <button class="uk-button uk-modal-close" type="button" (click)="onEdit()">Save</button>
           </p>
         </div>
       </div>

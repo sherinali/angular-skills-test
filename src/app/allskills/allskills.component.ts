@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from '@firebase/util';
+import { Observable } from 'rxjs/Observable';
 import { AngularFireList, AngularFireDatabase } from 'angularfire2/database';
 import {Router, ActivatedRoute} from '@angular/router';
 
@@ -21,7 +21,7 @@ export class AllskillsComponent implements OnInit {
     price :  '' ,
     note: ''
    } 
- 
+   loaded:boolean=false
   constructor(public db:AngularFireDatabase , public router:Router) {
 
     this.itemList =db.list('skills')
@@ -32,9 +32,10 @@ export class AllskillsComponent implements OnInit {
               let y = action.payload.toJSON()
               y["$key"] = action.key
               this.itemArray.push(y as ListItemClass)
-    
+              this.loaded=true 
   })
       })
+      console.log(this.itemArray)    
 
    }
    ngOnInit() {

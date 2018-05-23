@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireDatabase ,AngularFireList } from 'angularfire2/database';
 
 @Component({
   selector: 'app-register',
@@ -11,9 +11,10 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 export class RegisterComponent implements OnInit {
   email:string = '';
   password :string ='';
+  itemList: AngularFireList<any>
 
-  constructor(private fire:AngularFireAuth , private router:Router ) {
-
+  constructor(public db:AngularFireDatabase, private fire:AngularFireAuth , private router:Router ) {
+    this.itemList = db.list('users')
    }
 
   ngOnInit() {
@@ -22,18 +23,30 @@ export class RegisterComponent implements OnInit {
   myRegister(){
     this.fire.auth.createUserWithEmailAndPassword(this.email, this.password)
     .then(user =>{
-      console.log(this.email, this.password)
-      localStorage.setItem('isLoggedIn','true')
+     // console.log(this.email, this.password)
+      localStorage.setItem('IsLoggedIn','true')
       localStorage.setItem('email',this.fire.auth.currentUser.email )
 
       this.fire.authState.subscribe(auth=>{
         if(auth){
   localStorage.setItem('uid',auth.uid )
   
+  this.itemList.push({
+    email: this.email ,
+    uid : auth.uid,
+    name : ''  ,
+    phone :  '' ,
+    age : '' ,
+    address :  '' ,
+    city :  '' ,
+    job : '',
+    image:''
+
+  })
         }
       })
-
-       this.router.navigate(['home'])
+      
+      this.router.navigate(['addskill'])
      }).catch(error=>{
       console.error(error)
      })

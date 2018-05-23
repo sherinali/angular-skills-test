@@ -22,6 +22,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import *as Firebase from 'Firebase/app';
 import { firebase } from '@firebase/app';
+import { finalize } from 'rxjs/operators';
 
 
 
