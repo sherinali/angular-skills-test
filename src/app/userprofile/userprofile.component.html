@@ -3,7 +3,7 @@
     <div class="uk-card-header">
       <div class="uk-grid-small uk-flex-middle" uk-grid>
         <div class="uk-width-auto">
-          <img class="uk-border-circle" width="80" height="100" src="assets/img/profile-icon.png"> 
+          <img class="uk-border-circle" width="80" height="100" src="{{data.image}}"> 
           <!-- {{data.image}} -->
           <br>          <br>
           <input type="file" (change)="upload($event)" accept=".png,.jpg" />
@@ -53,7 +53,7 @@
 
           <p class="uk-text-right">
             <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
-            <button class="uk-button uk-modal-close uk-button-primary" type="button" (click)="onEdite(item.$key)">Save</button>
+            <button class="uk-button uk-modal-close uk-button-primary" type="button" (click)="onEdite()">Save</button>
           </p>
         </div>
       </div>

@@ -9,8 +9,7 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./userprofile.component.css']
 })
 export class UserprofileComponent implements OnInit {
-  afStorage: any;
-  //afStorage: any;
+
   email: string;
   myid: string;
 
@@ -34,7 +33,7 @@ export class UserprofileComponent implements OnInit {
   downloadURL: Observable<string>;
   imageURL: string
 
-  constructor(public db: AngularFireDatabase) {
+  constructor(private afStorage: AngularFireStorage, public db: AngularFireDatabase) {
     this.email = localStorage.getItem('email');
     this.myid = localStorage.getItem('uid');
     this.itemList = db.list('users')
@@ -44,8 +43,11 @@ export class UserprofileComponent implements OnInit {
         actions.forEach(action => {
           let y = action.payload.toJSON()
           y["$key"] = action.key
-          //this.itemArray.push(y as ListItemClass)
-          if (action.payload.child('uid').val == this.myid['id']) {
+          this.userKey
+          //   console.log(action.payload.toJSON())
+          //   console.log(action.payload.child('uid').val() )
+
+          if (action.payload.child('uid').val() == this.myid) {
             this.userKey = action.key
             this.itemArray.push(y as ListItemClass)
             this.data.name = this.itemArray[0]['name']
@@ -65,38 +67,42 @@ export class UserprofileComponent implements OnInit {
       )
 
 
-    console.log(this.itemArray[0])
-    this.data = this.itemArray[0]
+    // console.log(this.itemArray[0])
+    // this.data = this.itemArray[0]
   }
 
   ngOnInit() {
     console.log(this.email)
     console.log(this.myid)
+    console.log(this.userKey)
+    console.log(this.imageURL)
+
   }
 
 
-   upload(event) {
+
+  upload(event) {
     const id = Math.random().toString(36).substring(2);
     this.ref = this.afStorage.ref(id);
     this.task = this.ref.put(event.target.files[0]);
-    this.downloadURL =  this.task.downloadURL()
+    this.downloadURL = this.task.downloadURL()
     this.downloadURL.subscribe(url => {
 
       if (url) {
-       this.imageURL =  url
+        this.imageURL = url
 
       }
       console.log(this.imageURL)
 
-      this.itemList.set(this.userKey , {
-        name : this.data.name  ,
-        phone :  this.data.phone ,
-        age : this.data.age ,
-        address :  this.data.address ,
-        city :  this.data.city ,
-        job :  this.data.job , 
-        email:this.email,
-        uid:this.myid,
+      this.itemList.set(this.userKey, {
+        name: this.data.name,
+        phone: this.data.phone,
+        age: this.data.age,
+        address: this.data.address,
+        city: this.data.city,
+        job: this.data.job,
+        email: this.email,
+        uid: this.myid,
         image: this.imageURL
       })
 
@@ -108,7 +114,8 @@ export class UserprofileComponent implements OnInit {
 
 
 
-  onEdit() {
+
+  onEdite() {
 
 
     this.itemList.set(this.userKey, {
@@ -120,8 +127,9 @@ export class UserprofileComponent implements OnInit {
       job: this.data.job,
       email: this.email,
       uid: this.myid
-                                    })
-           }
+    })
+
+  }
 
 
 

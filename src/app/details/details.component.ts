@@ -19,7 +19,9 @@ export class DetailsComponent implements OnInit {
     skill: '',
     province: '',
     price: '',
-    email: ''
+    email: '',
+    uid: '',
+    image: ''
   }
   constructor(public route: ActivatedRoute, public db: AngularFireDatabase) {
     this.route.params.subscribe(params => {
@@ -51,7 +53,23 @@ export class DetailsComponent implements OnInit {
         })
       })
 
+
+    this.itemList = db.list('/users')
+
+    this.itemList.snapshotChanges()
+      .subscribe(actions => {
+        actions.forEach(action => {
+          let y = action.payload.toJSON()
+          if (y['uid'] == this.data.uid)
+            this.data.image = y['image']
+          console.log("this iamge url" + this.data.image)
+          console.log("this key" + y['uid'])
+        })
+      })
+
   }
+
+
 
   ngOnInit() {
     console.log(this.id['id'])
