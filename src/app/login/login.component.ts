@@ -24,6 +24,7 @@ export class LoginComponent implements OnInit {
 
     this.fire.auth.signInWithEmailAndPassword(this.email, this.password)
       .then(user => {
+        this.IsLoggedIn = true;
         console.log(this.email, this.password)
         localStorage.setItem('IsLoggedIn', 'true')
         localStorage.setItem('email', this.fire.auth.currentUser.email)

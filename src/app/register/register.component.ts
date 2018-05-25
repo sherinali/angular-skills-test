@@ -12,9 +12,11 @@ export class RegisterComponent implements OnInit {
   email:string = '';
   password :string ='';
   itemList: AngularFireList<any>
+  IsLoggedIn: boolean = false; 
 
   constructor(public db:AngularFireDatabase, private fire:AngularFireAuth , private router:Router ) {
     this.itemList = db.list('users')
+    this.itemList = db.list('skills')
    }
 
   ngOnInit() {
@@ -24,6 +26,7 @@ export class RegisterComponent implements OnInit {
     this.fire.auth.createUserWithEmailAndPassword(this.email, this.password)
     .then(user =>{
      // console.log(this.email, this.password)
+     this.IsLoggedIn = true;
       localStorage.setItem('IsLoggedIn','true')
       localStorage.setItem('email',this.fire.auth.currentUser.email )
 
@@ -40,7 +43,8 @@ export class RegisterComponent implements OnInit {
     address :  '' ,
     city :  '' ,
     job : '',
-    image:''
+    image:'',
+    note:''
 
   })
         }

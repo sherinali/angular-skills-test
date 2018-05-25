@@ -34,7 +34,7 @@ export class UserprofileComponent implements OnInit {
   ref: AngularFireStorageReference;
   task: AngularFireUploadTask;
   downloadURL: Observable<string>;
-  uploadPercent: Observable<number>;
+  // uploadPercent: Observable<number>;
   imageURL: string
   imgload: boolean = true;
 
@@ -42,7 +42,8 @@ export class UserprofileComponent implements OnInit {
     this.email = localStorage.getItem('email');
     this.myid = localStorage.getItem('uid');
     // console.log(this.redirect)
-    // if (this.redirect == false) {''}
+     if (this.redirect == false) {''}
+
     this.itemList = db.list('users')
 
     this.itemList.snapshotChanges()
@@ -82,8 +83,8 @@ export class UserprofileComponent implements OnInit {
   ngOnInit() {
     console.log(this.email)
     console.log(this.myid)
-    console.log(this.userKey)
-    console.log(this.imageURL)
+    // console.log(this.userKey)
+    // console.log(this.imageURL)
 
   }
 
@@ -117,54 +118,21 @@ export class UserprofileComponent implements OnInit {
   //   })
 
   // }
+//--------------------------------------------------------
 
-  // upload(event) {
-  //   const id = Math.random().toString(36).substring(2)
-  //   this.afStorage.upload(id, event.target.files[0]).then(() => {
-  //     this.ref = this.afStorage.ref(id)
-  //     this.ref.getDownloadURL().subscribe(url => {
-  //       console.log(url)
-
-  //       if (url) {
-  //         this.imageURL = url
-  //         this.itemList.set(this.userKey, {
-  //           name: this.data.name,
-  //           age: this.data.age,
-  //           phone: this.data.phone,
-  //           address: this.data.address,
-  //           city: this.data.city,
-  //           job: this.data.job,
-  //           email: this.email,
-  //           uid: this.myid,
-  //           image: this.imageURL
-  //         })
-
-  //       }
-  //     })
-  //   })
-
-  // }
-  // ----------------------------------------------------
   upload(event) {
-    // random name = path of image in storge server
-    const id = Math.random().toString(36).substring(2);
-    //uapload task(path,and file) and storge then make reference
-    const TaskUpload = this.afStorage.upload(id, event.target.files[0])
-      .then(() => {
-        this.ref = this.afStorage.ref(id);
-        //getDownloadURL() Observable method
-        const downloadURL = this.ref.getDownloadURL().subscribe(url => {
+    const id = Math.random().toString(36).substring(2)
+    this.afStorage.upload(id, event.target.files[0]).then(() => {
+      this.ref = this.afStorage.ref(id)
+      this.ref.getDownloadURL().subscribe(url => {
+        console.log(url)
 
-          //  if (url) {
+        if (url) {
           this.imageURL = url
-          // }
-
-          console.log(this.imageURL)
-
           this.itemList.set(this.userKey, {
             name: this.data.name,
-            phone: this.data.phone,
             age: this.data.age,
+            phone: this.data.phone,
             address: this.data.address,
             city: this.data.city,
             job: this.data.job,
@@ -172,13 +140,48 @@ export class UserprofileComponent implements OnInit {
             uid: this.myid,
             image: this.imageURL
           })
-        })
+
+        }
       })
-
-
-
+    })
 
   }
+  // ----------------------------------------------------
+  // upload(event) {
+  //   // random name = path of image in storge server
+  //   const id = Math.random().toString(36).substring(2);
+  //   //uapload task(path,and file) and storge then make reference
+  //   const TaskUpload = this.afStorage.upload(id, event.target.files[0])
+  //     .then(() => {
+  //       this.ref = this.afStorage.ref(id);
+  //       //getDownloadURL() Observable method
+  //       const downloadURL = this.ref.getDownloadURL().subscribe(url => {
+
+  //         //  if (url) {
+  //         this.imageURL = url
+  //         // }
+
+  //         console.log(this.imageURL)
+
+  //         this.itemList.set(this.userKey, {
+  //           name: this.data.name,
+  //           phone: this.data.phone,
+  //           age: this.data.age,
+  //           address: this.data.address,
+  //           city: this.data.city,
+  //           job: this.data.job,
+  //           email: this.email,
+  //           uid: this.myid,
+  //           image: this.imageURL
+  //         })
+  //       })
+  //     })
+
+
+
+
+  // }
+
   //...........................
   // upload(event) {
   //   const id = Math.random().toString(36).substring(2)
@@ -216,7 +219,7 @@ export class UserprofileComponent implements OnInit {
   onEdit() {
 
 
-    this.itemList.set(this.userKey, {
+    this.itemList.set(this.myid, {
       name: this.data.name,
       phone: this.data.phone,
       age: this.data.age,
@@ -225,7 +228,7 @@ export class UserprofileComponent implements OnInit {
       job: this.data.job,
       email: this.email,
       uid: this.myid,
-      image: this.imageURL
+      image:this.data.image
     })
 
   }

@@ -1,31 +1,48 @@
 <div class="uk-padding">
+  <span *ngIf="!loaded">
+    <div class="sk-circle">
+      <div class="sk-circle1 sk-child"></div>
+      <div class="sk-circle2 sk-child"></div>
+      <div class="sk-circle3 sk-child"></div>
+      <div class="sk-circle4 sk-child"></div>
+      <div class="sk-circle5 sk-child"></div>
+      <div class="sk-circle6 sk-child"></div>
+      <div class="sk-circle7 sk-child"></div>
+      <div class="sk-circle8 sk-child"></div>
+      <div class="sk-circle9 sk-child"></div>
+      <div class="sk-circle10 sk-child"></div>
+      <div class="sk-circle11 sk-child"></div>
+      <div class="sk-circle12 sk-child"></div>
+    </div>
+  </span>
+
   <table class="uk-table uk-table-striped ">
-    <thead>
+    <thead *ngIf="loaded">
       <tr>
-        <div>
-          <th>$key</th>
-          <th>name</th>
-          <th>province</th>
-          <th>skill</th>
-
-
-        </div>
+        <!-- <div> -->
+        <th>$key</th>
+        <th>name</th>
+        <th>province</th>
+        <th>skill</th>
+        <!-- </div> -->
       </tr>
     </thead>
     <tbody>
-        <span *ngIf="!loaded"  class="uk-align-center" uk-spinner="ratio: 4.5"></span>
-      <tr *ngFor="let item of itemArray">
-        <div>
-          <td>{{item.$key}}</td>
-          <td>{{item.name}}</td>
-          <td>{{item.province}}</td>
-          <td>{{item.skill}}</td>
-          <td> <button class="uk-button uk-button-default uk-margin-small-right" type="button" (click)="moreInfo(item.$key)">Details</button>
-          </td>
-        </div>
+      <!-- <span *ngIf="!loaded"  class="uk-align-center" uk-spinner="ratio: 4.5"></span> -->
+      <tr *ngFor="let item of itemArray | paginate: { itemsPerPage: 3, currentPage: p }">
+        <!-- <div> -->
+        <td>{{item.$key}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.province}}</td>
+        <td>{{item.skill}}</td>
+        <td>
+          <button class="uk-button uk-button-default uk-margin-small-right" type="button" (click)="moreInfo(item.$key)">Details</button>
+        </td>
+        <!-- </div> -->
 
       </tr>
 
     </tbody>
   </table>
+  <pagination-controls (pageChange)="p = $event" *ngIf="loaded"></pagination-controls>
 </div>

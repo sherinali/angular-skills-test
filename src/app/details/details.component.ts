@@ -23,7 +23,7 @@ export class DetailsComponent implements OnInit {
     uid: '',
     image: ''
   }
-  constructor(public route: ActivatedRoute, public db: AngularFireDatabase) {
+  constructor(private route: ActivatedRoute, public db: AngularFireDatabase) {
     this.route.params.subscribe(params => {
       this.id = params
     });

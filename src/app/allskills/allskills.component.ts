@@ -9,6 +9,7 @@ import {Router, ActivatedRoute} from '@angular/router';
   styleUrls: ['./allskills.component.css']
 })
 export class AllskillsComponent implements OnInit {
+  p: any ;
   itemList: AngularFireList<any>;
   
   itemArray = []

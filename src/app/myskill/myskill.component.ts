@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AngularFireList, AngularFireDatabase } from 'angularfire2/database';
 import { Router } from '@angular/router';
-import { ifStmt } from '@angular/compiler/src/output/output_ast';
-import { of } from 'rxjs';
+// import { ifStmt } from '@angular/compiler/src/output/output_ast';
+// import { of } from 'rxjs';
 
 @Component({
   selector: 'app-myskill',
@@ -29,7 +29,7 @@ export class MyskillComponent implements OnInit {
 
   constructor(public db: AngularFireDatabase, public router: Router) {
 
-    this.itemList = db.list('skills')
+    this.itemList = db.list('skills');
 
     this.itemList.snapshotChanges()
       .subscribe(actions => {
@@ -54,8 +54,8 @@ export class MyskillComponent implements OnInit {
 
   editForm($key) {
     for (let value of this.itemArray) {
-      if (value['$key'] === $key) {
-        console.log(value['$key'], value['name'], value['phone'], value['skill'], value['province'], value['price'], value['note']);
+      if (value['$key'] == $key) {
+        console.log(value['$key']);
         this.data.name = value['name'];
         this.data.phone = value['phone'];
         this.data.skill = value['skill'];
@@ -92,8 +92,8 @@ export class MyskillComponent implements OnInit {
       uid: this.myUid
     }
     )
-    console.log($key);
-    console.log(this.data.name, this.data.phone, this.data.skill, this.data.province, this.data.price, this.data.note)
+    // console.log($key);
+    // console.log(this.data.name, this.data.phone, this.data.skill, this.data.province, this.data.price, this.data.note)
     this.itemArray = []
 
   }
